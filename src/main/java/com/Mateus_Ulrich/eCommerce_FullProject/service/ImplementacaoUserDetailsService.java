@@ -1,6 +1,7 @@
 package com.Mateus_Ulrich.eCommerce_FullProject.service;
 
 import com.Mateus_Ulrich.eCommerce_FullProject.model.Usuario;
+
 import com.Mateus_Ulrich.eCommerce_FullProject.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;

@@ -1,7 +1,7 @@
 package com.Mateus_Ulrich.eCommerce_FullProject;
+
 import java.util.List;
 
-import com.Mateus_Ulrich.eCommerce_FullProject.model.Acesso;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.Mateus_Ulrich.eCommerce_FullProject.controller.AcessoController;
+import com.Mateus_Ulrich.eCommerce_FullProject.model.Acesso;
 import com.Mateus_Ulrich.eCommerce_FullProject.repository.AcessoRepository;
 import junit.framework.TestCase;
 
@@ -257,3 +258,6 @@ class ECommerceFullProjectApplicationTests extends TestCase{
 	}
 
 }
+
+
+
