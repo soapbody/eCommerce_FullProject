@@ -1,18 +1,11 @@
 package com.Mateus_Ulrich.eCommerce_FullProject.security;
-
-<<<<<<< HEAD
-=======
 import com.Mateus_Ulrich.eCommerce_FullProject.model.Usuario;
->>>>>>> 327727a (Cadastro de Pessoa juridica)
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import com.Mateus_Ulrich.eCommerce_FullProject.ApplicationContextLoad;
-<<<<<<< HEAD
-import com.Mateus_Ulrich.eCommerce_FullProject.model.Usuario;
-=======
->>>>>>> 327727a (Cadastro de Pessoa juridica)
+
 import com.Mateus_Ulrich.eCommerce_FullProject.repository.UsuarioRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
