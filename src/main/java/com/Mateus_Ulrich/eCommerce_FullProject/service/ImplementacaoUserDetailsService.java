@@ -1,10 +1,5 @@
 package com.Mateus_Ulrich.eCommerce_FullProject.service;
-
 import com.Mateus_Ulrich.eCommerce_FullProject.model.Usuario;
-<<<<<<< HEAD
-
-=======
->>>>>>> 327727a (Cadastro de Pessoa juridica)
 import com.Mateus_Ulrich.eCommerce_FullProject.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;

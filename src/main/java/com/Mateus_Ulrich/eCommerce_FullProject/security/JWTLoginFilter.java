@@ -1,12 +1,7 @@
 package com.Mateus_Ulrich.eCommerce_FullProject.security;
 
-<<<<<<< HEAD
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.Mateus_Ulrich.eCommerce_FullProject.model.Usuario;
-=======
-import com.Mateus_Ulrich.eCommerce_FullProject.model.Usuario;
-import com.fasterxml.jackson.databind.ObjectMapper;
->>>>>>> 327727a (Cadastro de Pessoa juridica)
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
