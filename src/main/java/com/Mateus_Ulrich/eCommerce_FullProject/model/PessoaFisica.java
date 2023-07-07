@@ -3,6 +3,7 @@ package com.Mateus_Ulrich.eCommerce_FullProject.model;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,4 +41,17 @@ public class PessoaFisica extends Pessoa {
 		this.dataNascimento = dataNascimento;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
+		PessoaFisica that = (PessoaFisica) o;
+		return Objects.equals(cpf, that.cpf);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), cpf);
+	}
 }

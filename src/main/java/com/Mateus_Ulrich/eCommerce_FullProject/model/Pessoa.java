@@ -57,10 +57,7 @@ public abstract class Pessoa implements Serializable {
 	@JoinColumn(name = "empresa_id", nullable = true, 
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
 	private Pessoa empresa;
-	
-	
-	
-	
+
 	public Pessoa getEmpresa() {
 		return empresa;
 	}
@@ -83,6 +80,9 @@ public abstract class Pessoa implements Serializable {
 	}
 	
 	public List<Endereco> getEnderecos() {
+		return enderecos;
+	}
+	public List<Endereco> getEnderecos(int p) {
 		return enderecos;
 	}
 
