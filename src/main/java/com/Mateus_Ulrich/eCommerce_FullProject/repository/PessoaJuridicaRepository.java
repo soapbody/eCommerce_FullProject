@@ -4,10 +4,12 @@ import com.Mateus_Ulrich.eCommerce_FullProject.model.PessoaJuridica;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
+@Transactional
 public interface PessoaJuridicaRepository extends CrudRepository<PessoaJuridica, Long> {
     @Query(value = "select pj from PessoaJuridica pj where (trim(pj.nome)) like %?1%")
     public List<PessoaJuridica> consultaNomePJ(String nome);

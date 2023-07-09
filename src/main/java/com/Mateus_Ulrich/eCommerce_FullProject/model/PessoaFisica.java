@@ -1,8 +1,10 @@
 package com.Mateus_Ulrich.eCommerce_FullProject.model;
 
+import net.bytebuddy.implementation.bind.annotation.Super;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;

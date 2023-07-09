@@ -1,4 +1,6 @@
 package com.Mateus_Ulrich.eCommerce_FullProject.model;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.io.Serializable;
 
@@ -16,6 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "categoria_produto")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @SequenceGenerator(name = "seq_categoria_produto", sequenceName = "seq_categoria_produto", allocationSize = 1, initialValue = 1)
 public class CategoriaProduto implements Serializable {
 
@@ -28,20 +31,17 @@ public class CategoriaProduto implements Serializable {
 	@Column(name = "nome_desc", nullable = false)
 	private String nomeDesc;
 	
-	
+	//@JsonIgnore
 	@ManyToOne(targetEntity = Pessoa.class)
 	@JoinColumn(name = "empresa_id", nullable = false, 
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
-	private Pessoa empresa;
-	
-	
-	
+	private PessoaJuridica empresa;
 
-	public Pessoa getEmpresa() {
+	public PessoaJuridica getEmpresa() {
 		return empresa;
 	}
 
-	public void setEmpresa(Pessoa empresa) {
+	public void setEmpresa(PessoaJuridica empresa) {
 		this.empresa = empresa;
 	}
 

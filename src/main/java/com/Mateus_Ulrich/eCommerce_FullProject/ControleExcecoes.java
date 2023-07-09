@@ -28,7 +28,19 @@ import java.util.List;
 public class ControleExcecoes extends ResponseEntityExceptionHandler {
 	@Autowired
 	private ServiceSendEmail serviceSendEmail;
-	
+
+	@ExceptionHandler(CustomException.class)
+	public ResponseEntity<Object> handleExceptionCustom (CustomException ex) {
+
+		ObjetoErroDTO objetoErroDTO = new ObjetoErroDTO();
+
+		objetoErroDTO.setError(ex.getMessage());
+		objetoErroDTO.setCode(HttpStatus.OK.toString());
+
+		return new ResponseEntity<Object>(objetoErroDTO, HttpStatus.OK);
+	}
+
+
 	/*Captura execeçoes do projeto*/
 	@ExceptionHandler({Exception.class, RuntimeException.class, Throwable.class})
 	@Override

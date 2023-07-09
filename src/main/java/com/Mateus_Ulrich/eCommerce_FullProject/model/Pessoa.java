@@ -58,6 +58,7 @@ public abstract class Pessoa implements Serializable {
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
 	private Pessoa empresa;
 
+
 	public Pessoa getEmpresa() {
 		return empresa;
 	}
@@ -69,16 +70,16 @@ public abstract class Pessoa implements Serializable {
 	public void setTipoPessoa(String tipoPessoa) {
 		this.tipoPessoa = tipoPessoa;
 	}
-	
+
 	public String getTipoPessoa() {
 		return tipoPessoa;
 	}
-	
-	
+
+
 	public void setEnderecos(List<Endereco> enderecos) {
 		this.enderecos = enderecos;
 	}
-	
+
 	public List<Endereco> getEnderecos() {
 		return enderecos;
 	}

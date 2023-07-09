@@ -1,15 +1,16 @@
 package com.Mateus_Ulrich.eCommerce_FullProject.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.br.CNPJ;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "pessoa_juridica")
 @PrimaryKeyJoinColumn(name = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class PessoaJuridica extends Pessoa {
 
 	private static final long serialVersionUID = 1L;
@@ -27,8 +28,9 @@ public class PessoaJuridica extends Pessoa {
 	
 	@Column(nullable = false)
 	private String razaoSocial;
-	
-	private String categoria;
+
+	@OneToMany(mappedBy = "empresa")
+	private List<CategoriaProduto> categorias;
 
 	public String getCnpj() {
 		return cnpj;
@@ -70,12 +72,11 @@ public class PessoaJuridica extends Pessoa {
 		this.razaoSocial = razaoSocial;
 	}
 
-	public String getCategoria() {
-		return categoria;
+	public List<CategoriaProduto> getCategorias() {
+		return categorias;
 	}
 
-	public void setCategoria(String categoria) {
-		this.categoria = categoria;
+	public void setCategorias(List<CategoriaProduto> categorias) {
+		this.categorias = categorias;
 	}
-
 }

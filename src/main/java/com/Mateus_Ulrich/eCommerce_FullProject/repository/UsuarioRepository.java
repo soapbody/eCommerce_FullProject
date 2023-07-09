@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
 
 	@Query(value = "select u from Usuario u where u.login = ?1")
