@@ -1,12 +1,8 @@
 package com.Mateus_Ulrich.eCommerce_FullProject.controller;
 
 import com.Mateus_Ulrich.eCommerce_FullProject.CustomException;
-import com.Mateus_Ulrich.eCommerce_FullProject.model.Acesso;
-import com.Mateus_Ulrich.eCommerce_FullProject.model.PessoaFisica;
 import com.Mateus_Ulrich.eCommerce_FullProject.model.Produto;
-import com.Mateus_Ulrich.eCommerce_FullProject.repository.AcessoRepository;
 import com.Mateus_Ulrich.eCommerce_FullProject.repository.ProdutoRepository;
-import com.Mateus_Ulrich.eCommerce_FullProject.service.AcessoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

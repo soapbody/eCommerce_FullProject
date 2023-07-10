@@ -1,5 +1,8 @@
 package com.Mateus_Ulrich.eCommerce_FullProject.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -13,34 +16,32 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "marca_produto")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @SequenceGenerator(name = "seq_marca_produto", sequenceName = "seq_marca_produto", allocationSize = 1, initialValue = 1)
 public class MarcaProduto implements Serializable {
-
 	private static final long serialVersionUID = 1L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_marca_produto")
 	private Long id;
-
+	@NotNull(message = "Informe o nome da Marca do Produto.")
 	@Column(nullable = false)
 	private String nomeDesc;
 	
-	
+	@NotNull(message = "A Empresa da Marca não pode ser Nula.")
 	@ManyToOne(targetEntity = Pessoa.class)
 	@JoinColumn(name = "empresa_id", nullable = false, 
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
-	private Pessoa empresa;
-	
-	
+	private PessoaJuridica empresa;
 
-	public Pessoa getEmpresa() {
+	public PessoaJuridica getEmpresa() {
 		return empresa;
 	}
 
-	public void setEmpresa(Pessoa empresa) {
+	public void setEmpresa(PessoaJuridica empresa) {
 		this.empresa = empresa;
 	}
 
