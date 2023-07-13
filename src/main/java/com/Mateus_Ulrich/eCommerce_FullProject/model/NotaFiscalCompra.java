@@ -1,5 +1,9 @@
 package com.Mateus_Ulrich.eCommerce_FullProject.model;
 
+import com.Mateus_Ulrich.eCommerce_FullProject.util.CustomDateDeserializer;
+import com.Mateus_Ulrich.eCommerce_FullProject.util.ValidDateFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -17,37 +21,37 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.*;
 
 
 @Entity
 @Table(name = "nota_fiscal_compra")
 @SequenceGenerator(name = "seq_nota_fiscal_compra", sequenceName = "seq_nota_fiscal_compra", allocationSize = 1, initialValue = 1)
 public class NotaFiscalCompra implements Serializable {
-
 	private static final long serialVersionUID = 1L;
-	
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_nota_fiscal_compra")
 	private Long id;
-	
+	@NotBlank(message = "Informe o número da nota")
 	@Column(nullable = false)
 	private String numeroNota;
-	
+	@NotBlank(message = "Informe a série da nota")
 	@Column(nullable = false)
 	private String serieNota;
-	
-	
 	private String descricaoObs;
-	
+	@NotNull(message = "Informe o valor total")
+	@DecimalMin(value = "0.01", inclusive = true, message = "O valor total deve ser maior que zero")
 	@Column(nullable = false)
 	private BigDecimal valorTotal;
 	
 	private BigDecimal valorDesconto;
-	
+	@NotNull(message = "Informe o valor de ICMS")
+	@DecimalMin(value = "0.01", inclusive = true, message = "O valor do ICMS deve ser maior que zero")
 	@Column(nullable = false)
 	private BigDecimal valorIcms;
-	
+	@NotNull(message = "informe a data de compra")
+	@ValidDateFormat(message = "Formato de data inválido. Use o formato dd/MM/yyyy")
+	@JsonDeserialize(using = CustomDateDeserializer.class)
 	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date dataCompra;
@@ -55,7 +59,7 @@ public class NotaFiscalCompra implements Serializable {
 	@ManyToOne(targetEntity = Pessoa.class)
 	@JoinColumn(name = "pessoa_id", nullable = false, 
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
-	private Pessoa pessoa;
+	private PessoaJuridica pessoa;
 	
 	@ManyToOne
 	@JoinColumn(name = "conta_pagar_id", nullable = false, 
@@ -66,15 +70,13 @@ public class NotaFiscalCompra implements Serializable {
 	@ManyToOne(targetEntity = Pessoa.class)
 	@JoinColumn(name = "empresa_id", nullable = false, 
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
-	private Pessoa empresa;
+	private PessoaJuridica empresa;
 	
-	
-	
-	public Pessoa getEmpresa() {
+	public PessoaJuridica getEmpresa() {
 		return empresa;
 	}
 
-	public void setEmpresa(Pessoa empresa) {
+	public void setEmpresa(PessoaJuridica empresa) {
 		this.empresa = empresa;
 	}
 
@@ -142,11 +144,11 @@ public class NotaFiscalCompra implements Serializable {
 		this.dataCompra = dataCompra;
 	}
 
-	public Pessoa getPessoa() {
+	public PessoaJuridica getPessoa() {
 		return pessoa;
 	}
 
-	public void setPessoa(Pessoa pessoa) {
+	public void setPessoa(PessoaJuridica pessoa) {
 		this.pessoa = pessoa;
 	}
 

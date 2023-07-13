@@ -1,5 +1,9 @@
 package com.Mateus_Ulrich.eCommerce_FullProject.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -24,29 +28,19 @@ public class ImagemProduto implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_imagem_produto")
 	private Long id;
-
-	
 	@Column(columnDefinition = "text", nullable = false)
 	private String imagemOriginal;
-
 	@Column(columnDefinition = "text", nullable = false)
 	private String imagemMiniatura;
-
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "produto_id", nullable = false,
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "produto_fk"))
 	private Produto produto;
-	
-	
 	@ManyToOne(targetEntity = Pessoa.class)
 	@JoinColumn(name = "empresa_id", nullable = false, 
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
 	private Pessoa empresa;
-	
-	
-	
-	
-
 	public Pessoa getEmpresa() {
 		return empresa;
 	}

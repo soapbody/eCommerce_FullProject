@@ -1,19 +1,14 @@
 package com.Mateus_Ulrich.eCommerce_FullProject.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -21,9 +16,7 @@ import javax.validation.constraints.Size;
 @Table(name = "produto")
 @SequenceGenerator(name = "seq_produto", sequenceName = "seq_produto", allocationSize = 1, initialValue = 1)
 public class Produto implements Serializable {
-
 	private static final long serialVersionUID = 1L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_produto")
 	private Long id;
@@ -58,14 +51,15 @@ public class Produto implements Serializable {
 	private BigDecimal valorVenda = BigDecimal.ZERO;
 
 	@Column(nullable = false)
-	private Integer QtdEstoque = 0;
+	private Integer qtdEstoque;
 
-	private Integer QtdeAlertaEstoque = 0;
+	private Integer qtdeAlertaEstoque = 0;
 
 	private String linkYoutube;
 
 	private Boolean alertaQtdeEstoque = Boolean.FALSE;
-
+	@OneToMany(mappedBy = "produto", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<ImagemProduto> imagens = new ArrayList<ImagemProduto>();
 	private Integer qtdeClique = 0;
 	@NotNull(message = "Empresa Fornecedora do produto deve ser informado.")
 	@ManyToOne(targetEntity = PessoaJuridica.class)
@@ -81,36 +75,6 @@ public class Produto implements Serializable {
 	@ManyToOne(targetEntity = MarcaProduto.class)
 	@JoinColumn(name = "marca_produto_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "marca_produto_id_fk"))
 	private MarcaProduto marcaProduto;
-
-	@NotNull(message = "A nota item do produto deve ser informado.")
-	@ManyToOne(targetEntity = NotaItemProduto.class)
-	@JoinColumn(name = "nota_item_produto_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "nota_item_produto_id_fk"))
-	private NotaItemProduto notaItemProduto;
-
-
-	public MarcaProduto getMarcaProduto() {
-		return marcaProduto;
-	}
-
-	public void setMarcaProduto(MarcaProduto marcaProduto) {
-		this.marcaProduto = marcaProduto;
-	}
-
-	public PessoaJuridica getEmpresa() {
-		return empresa;
-	}
-
-	public void setEmpresa(PessoaJuridica empresa) {
-		this.empresa = empresa;
-	}
-
-	public void setAtivo(Boolean ativo) {
-		this.ativo = ativo;
-	}
-
-	public Boolean getAtivo() {
-		return ativo;
-	}
 
 	public Long getId() {
 		return id;
@@ -134,6 +98,14 @@ public class Produto implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 
 	public String getDescricao() {
@@ -185,19 +157,19 @@ public class Produto implements Serializable {
 	}
 
 	public Integer getQtdEstoque() {
-		return QtdEstoque;
+		return qtdEstoque;
 	}
 
 	public void setQtdEstoque(Integer qtdEstoque) {
-		QtdEstoque = qtdEstoque;
+		this.qtdEstoque = qtdEstoque;
 	}
 
 	public Integer getQtdeAlertaEstoque() {
-		return QtdeAlertaEstoque;
+		return qtdeAlertaEstoque;
 	}
 
 	public void setQtdeAlertaEstoque(Integer qtdeAlertaEstoque) {
-		QtdeAlertaEstoque = qtdeAlertaEstoque;
+		this.qtdeAlertaEstoque = qtdeAlertaEstoque;
 	}
 
 	public String getLinkYoutube() {
@@ -216,6 +188,14 @@ public class Produto implements Serializable {
 		this.alertaQtdeEstoque = alertaQtdeEstoque;
 	}
 
+	public List<ImagemProduto> getImagens() {
+		return imagens;
+	}
+
+	public void setImagens(List<ImagemProduto> imagens) {
+		this.imagens = imagens;
+	}
+
 	public Integer getQtdeClique() {
 		return qtdeClique;
 	}
@@ -224,12 +204,28 @@ public class Produto implements Serializable {
 		this.qtdeClique = qtdeClique;
 	}
 
+	public PessoaJuridica getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(PessoaJuridica empresa) {
+		this.empresa = empresa;
+	}
+
 	public CategoriaProduto getCategoriaProduto() {
 		return categoriaProduto;
 	}
 
 	public void setCategoriaProduto(CategoriaProduto categoriaProduto) {
 		this.categoriaProduto = categoriaProduto;
+	}
+
+	public MarcaProduto getMarcaProduto() {
+		return marcaProduto;
+	}
+
+	public void setMarcaProduto(MarcaProduto marcaProduto) {
+		this.marcaProduto = marcaProduto;
 	}
 
 	@Override

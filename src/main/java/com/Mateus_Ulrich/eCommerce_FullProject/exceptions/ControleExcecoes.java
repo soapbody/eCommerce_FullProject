@@ -1,7 +1,13 @@
-package com.Mateus_Ulrich.eCommerce_FullProject;
+package com.Mateus_Ulrich.eCommerce_FullProject.exceptions;
 
 import com.Mateus_Ulrich.eCommerce_FullProject.model.dto.ObjetoErroDTO;
 import com.Mateus_Ulrich.eCommerce_FullProject.service.ServiceSendEmail;
+import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.mail.MessagingException;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +23,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
-import java.sql.SQLException;
-import java.util.List;
-
 @RestControllerAdvice
 @ControllerAdvice
+
 public class ControleExcecoes extends ResponseEntityExceptionHandler {
 	@Autowired
 	private ServiceSendEmail serviceSendEmail;
+
+	/*Captura execeçoes do projeto*/
 
 	@ExceptionHandler(CustomException.class)
 	public ResponseEntity<Object> handleExceptionCustom (CustomException ex) {
@@ -39,46 +42,43 @@ public class ControleExcecoes extends ResponseEntityExceptionHandler {
 
 		return new ResponseEntity<Object>(objetoErroDTO, HttpStatus.OK);
 	}
-
-
-	/*Captura execeçoes do projeto*/
-	@ExceptionHandler({Exception.class, RuntimeException.class, Throwable.class})
 	@Override
+	@ExceptionHandler({Exception.class, RuntimeException.class, Throwable.class})
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
-			HttpStatus status, WebRequest request) {
-		
+															 HttpStatus status, WebRequest request) {
 		ObjetoErroDTO objetoErroDTO = new ObjetoErroDTO();
-		
+		/*objetoErroDTO.setError(ex.getLocalizedMessage());
+		objetoErroDTO.setCode(status.value() + " ==> " + status.getReasonPhrase());*/
+
 		String msg = "";
-		
 		if (ex instanceof MethodArgumentNotValidException) {
-			
+
 			List<ObjectError> list = ((MethodArgumentNotValidException) ex).getBindingResult().getAllErrors();
-			
+
 			for (ObjectError objectError : list) {
 				msg += objectError.getDefaultMessage() + "\n";
 			}
 		}
-		 else if (ex instanceof HttpMessageNotReadableException) {
+
+		else if (ex instanceof HttpMessageNotReadableException) {
+
 			msg = "Não está sendo enviado dados para o BODY corpo da requisição";
 
-		}
-		 else {
+		}else {
 			msg = ex.getMessage();
 		}
-		
+
 		objetoErroDTO.setError(msg);
-		objetoErroDTO.setCode(status.value() + " ==> " + status.getReasonPhrase()); 
-		
+		objetoErroDTO.setCode(status.value() + " ==> " + status.getReasonPhrase());
+
 		ex.printStackTrace();
+
 		try {
 			serviceSendEmail.enviarEmailHtml("Erro na loja virtual", ExceptionUtils.getStackTrace(ex), "mateus_teti98@hotmail.com");
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			//throw new RuntimeException(e);
+			e.printStackTrace();
 		}
-
 		return new ResponseEntity<Object>(objetoErroDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
@@ -119,6 +119,9 @@ public class ControleExcecoes extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<Object>(objetoErroDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 		
 	}
-	
+
+
+
+
 
 }

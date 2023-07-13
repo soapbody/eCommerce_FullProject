@@ -2,17 +2,15 @@ package com.Mateus_Ulrich.eCommerce_FullProject;
 
 import com.Mateus_Ulrich.eCommerce_FullProject.controller.PessoaController;
 import com.Mateus_Ulrich.eCommerce_FullProject.enums.TipoEndereco;
+import com.Mateus_Ulrich.eCommerce_FullProject.exceptions.CustomException;
 import com.Mateus_Ulrich.eCommerce_FullProject.model.Endereco;
 import com.Mateus_Ulrich.eCommerce_FullProject.model.PessoaFisica;
 import com.Mateus_Ulrich.eCommerce_FullProject.model.PessoaJuridica;
 import com.Mateus_Ulrich.eCommerce_FullProject.repository.PessoaJuridicaRepository;
-import junit.framework.TestCase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
-
-import java.util.Calendar;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

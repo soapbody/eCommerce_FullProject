@@ -1,6 +1,6 @@
 package com.Mateus_Ulrich.eCommerce_FullProject.controller;
 
-import com.Mateus_Ulrich.eCommerce_FullProject.CustomException;
+import com.Mateus_Ulrich.eCommerce_FullProject.exceptions.CustomException;
 import com.Mateus_Ulrich.eCommerce_FullProject.model.MarcaProduto;
 import com.Mateus_Ulrich.eCommerce_FullProject.repository.MarcaRepository;
 import org.springframework.beans.factory.annotation.Autowired;

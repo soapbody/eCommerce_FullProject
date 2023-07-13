@@ -15,8 +15,8 @@ import java.util.Date;
 
         @Override
         public boolean isValid(Date value, ConstraintValidatorContext context) {
-            if (value == null) {
-                return true; // Permite valores nulos, se necessário
+            if (value == null)  {
+                return false; // Permite valores nulos, se necessário
             }
 
             SimpleDateFormat sdf = new SimpleDateFormat(pattern);

@@ -1,6 +1,6 @@
 package com.Mateus_Ulrich.eCommerce_FullProject.controller;
 
-import com.Mateus_Ulrich.eCommerce_FullProject.CustomException;
+import com.Mateus_Ulrich.eCommerce_FullProject.exceptions.CustomException;
 import com.Mateus_Ulrich.eCommerce_FullProject.enums.TipoPessoa;
 import com.Mateus_Ulrich.eCommerce_FullProject.model.Endereco;
 import com.Mateus_Ulrich.eCommerce_FullProject.model.PessoaFisica;

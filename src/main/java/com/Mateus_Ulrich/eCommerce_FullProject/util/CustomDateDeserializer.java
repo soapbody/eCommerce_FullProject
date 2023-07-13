@@ -21,5 +21,6 @@ public class CustomDateDeserializer extends JsonDeserializer<Date> {
         } catch (ParseException e) {
             throw new IllegalArgumentException("Invalid date format. Expected format: dd/MM/yyyy");
         }
+
     }
 }
