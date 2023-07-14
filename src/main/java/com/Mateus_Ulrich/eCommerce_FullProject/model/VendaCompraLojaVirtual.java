@@ -1,23 +1,18 @@
 package com.Mateus_Ulrich.eCommerce_FullProject.model;
 
+import com.Mateus_Ulrich.eCommerce_FullProject.util.CustomDateDeserializer;
+import com.Mateus_Ulrich.eCommerce_FullProject.util.ValidDateFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "vd_cp_loja_virt")
@@ -29,28 +24,29 @@ public class VendaCompraLojaVirtual implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_vd_cp_loja_virt")
 	private Long id;
-
-	@ManyToOne(targetEntity = Pessoa.class)
+	@NotNull(message = "A pessoa compradora deve ser informado")
+	@ManyToOne(targetEntity = PessoaFisica.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
-	private Pessoa pessoa;
-
-	@ManyToOne
+	private PessoaFisica pessoa;
+	@NotNull(message = "O endereço de entrega deve ser informado")
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "endereco_entrega_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "endereco_entrega_fk"))
 	private Endereco enderecoEntrega;
-
-	@ManyToOne
+	@NotNull(message = "O endereço de cobrança deve ser informado")
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "endereco_cobranca_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "endereco_cobranca_fk"))
 	private Endereco enderecoCobranca;
 
+	@DecimalMin(value = "0.01", inclusive = true, message = "Valor total da venda é muito baixo")
 	@Column(nullable = false)
 	private BigDecimal valorTotal;
 
 	private BigDecimal valorDesconto;
-
+	@NotNull(message = "A  forma de Pagamento deve ser informado")
 	@ManyToOne
 	@JoinColumn(name = "forma_pagamento_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "forma_pagamento_fk"))
 	private FormaPagamento formaPagamento;
-
+	@NotNull(message = "A  nota fiscal deve ser informado")
 	@OneToOne
 	@JoinColumn(name = "nota_fiscal_venda_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "nota_fiscal_venda_fk"))
 	private NotaFiscalVenda notaFiscalVenda;
@@ -58,36 +54,29 @@ public class VendaCompraLojaVirtual implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "cupom_desc_id", foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "cupom_desc_fk"))
 	private CupDesc cupDesc;
-
+	@DecimalMin(value = "5.", inclusive = true, message = "O valor do frete deve ser maior ou igual a 5")
 	@Column(nullable = false)
 	private BigDecimal valorFret;
 
+	@Min(value = 1, message = "O dia de entrega não pode ser menor que 1.")
+	@Max(value = 31, message = "O dia de entrega não pode ser superior a 31")
 	@Column(nullable = false)
 	private Integer diaEntrega;
-
+	@ValidDateFormat(message = "Data inválida. Use o formato dd/MM/yyyyy")
+	@JsonDeserialize(using = CustomDateDeserializer.class)
 	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date dataVenda;
-
+	@ValidDateFormat(message = "Data inválida. Use o formato dd/MM/yyyy")
+	@JsonDeserialize(using = CustomDateDeserializer.class)
 	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date dataEntrega;
-	
-	
-	@ManyToOne(targetEntity = Pessoa.class)
+	@NotNull(message = "A empresa dona do registro deve ser informado")
+	@ManyToOne(targetEntity = PessoaJuridica.class)
 	@JoinColumn(name = "empresa_id", nullable = false, 
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
-	private Pessoa empresa;
-	
-	
-
-	public Pessoa getEmpresa() {
-		return empresa;
-	}
-
-	public void setEmpresa(Pessoa empresa) {
-		this.empresa = empresa;
-	}
+	private PessoaJuridica empresa;
 
 	public Long getId() {
 		return id;
@@ -97,11 +86,11 @@ public class VendaCompraLojaVirtual implements Serializable {
 		this.id = id;
 	}
 
-	public Pessoa getPessoa() {
+	public PessoaFisica getPessoa() {
 		return pessoa;
 	}
 
-	public void setPessoa(Pessoa pessoa) {
+	public void setPessoa(PessoaFisica pessoa) {
 		this.pessoa = pessoa;
 	}
 
@@ -191,6 +180,14 @@ public class VendaCompraLojaVirtual implements Serializable {
 
 	public void setDataEntrega(Date dataEntrega) {
 		this.dataEntrega = dataEntrega;
+	}
+
+	public PessoaJuridica getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(PessoaJuridica empresa) {
+		this.empresa = empresa;
 	}
 
 	@Override

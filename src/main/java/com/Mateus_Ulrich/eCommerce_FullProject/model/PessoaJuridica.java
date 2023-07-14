@@ -31,7 +31,6 @@ public class PessoaJuridica extends Pessoa {
 
 	@OneToMany(mappedBy = "empresa")
 	private List<CategoriaProduto> categorias;
-
 	public String getCnpj() {
 		return cnpj;
 	}

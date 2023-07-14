@@ -51,9 +51,7 @@ public class Usuario implements UserDetails {
 	@JoinColumn(name = "pessoa_id", nullable = false, 
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
 	private Pessoa pessoa;
-	
-	
-	
+
 	public Pessoa getEmpresa() {
 		return empresa;
 	}
