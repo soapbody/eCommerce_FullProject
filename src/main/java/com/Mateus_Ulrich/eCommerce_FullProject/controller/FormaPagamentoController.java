@@ -16,7 +16,6 @@ import javax.validation.Valid;
 @RestController
 public class FormaPagamentoController {
     @Autowired
-
     private FormaPagamentoRepository formaPagamentoRepository;
 
     @ResponseBody /*Poder dar um retorno da API*/

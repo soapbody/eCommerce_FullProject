@@ -2,11 +2,14 @@ package com.Mateus_Ulrich.eCommerce_FullProject.model;
 
 import com.Mateus_Ulrich.eCommerce_FullProject.util.CustomDateDeserializer;
 import com.Mateus_Ulrich.eCommerce_FullProject.util.ValidDateFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
@@ -44,9 +47,10 @@ public class VendaCompraLojaVirtual implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "forma_pagamento_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "forma_pagamento_fk"))
 	private FormaPagamento formaPagamento;
-	@NotNull(message = "A  nota fiscal deve ser informado")
-	@OneToOne
-	@JoinColumn(name = "nota_fiscal_venda_id", nullable = true, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "nota_fiscal_venda_fk"))
+	@JsonIgnoreProperties(allowGetters = true)
+	@NotNull(message = "A nota fiscal deve ser informada")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "nota_fiscal_venda_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "nota_fiscal_venda_fk"))
 	private NotaFiscalVenda notaFiscalVenda;
 
 	@ManyToOne
@@ -75,6 +79,16 @@ public class VendaCompraLojaVirtual implements Serializable {
 	@JoinColumn(name = "empresa_id", nullable = false, 
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
 	private PessoaJuridica empresa;
+	@OneToMany(mappedBy = "vendaCompraLojaVirtual", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<ItemVendaLoja> itemVendaLojaList = new ArrayList<ItemVendaLoja>();
+
+	public List<ItemVendaLoja> getItemVendaLojaList() {
+		return itemVendaLojaList;
+	}
+
+	public void setItemVendaLojaList(List<ItemVendaLoja> itemVendaLojaList) {
+		this.itemVendaLojaList = itemVendaLojaList;
+	}
 
 	public Long getId() {
 		return id;

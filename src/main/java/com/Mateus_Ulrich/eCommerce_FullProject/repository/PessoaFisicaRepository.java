@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @Repository
-@Transactional
+
 
 public interface PessoaFisicaRepository extends CrudRepository<PessoaFisica, Long> {
     @Query(nativeQuery = true, value = "select * from pessoa_fisica where nome like :nome")

@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-@Transactional
 public interface CategoriaProdutoRepository extends JpaRepository<CategoriaProduto, Long> {
     @Query(nativeQuery = true, value = "select count(1) > 0 from categoria_produto where upper(trim(nome_desc)) = :nome_desc")
     boolean existeCategoria(@Param("nome_desc") String nomeDesc);
