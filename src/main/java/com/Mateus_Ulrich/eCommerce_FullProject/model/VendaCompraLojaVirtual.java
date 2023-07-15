@@ -36,11 +36,9 @@ public class VendaCompraLojaVirtual implements Serializable {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "endereco_cobranca_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "endereco_cobranca_fk"))
 	private Endereco enderecoCobranca;
-
 	@DecimalMin(value = "0.01", inclusive = true, message = "Valor total da venda é muito baixo")
 	@Column(nullable = false)
 	private BigDecimal valorTotal;
-
 	private BigDecimal valorDesconto;
 	@NotNull(message = "A  forma de Pagamento deve ser informado")
 	@ManyToOne
@@ -48,7 +46,7 @@ public class VendaCompraLojaVirtual implements Serializable {
 	private FormaPagamento formaPagamento;
 	@NotNull(message = "A  nota fiscal deve ser informado")
 	@OneToOne
-	@JoinColumn(name = "nota_fiscal_venda_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "nota_fiscal_venda_fk"))
+	@JoinColumn(name = "nota_fiscal_venda_id", nullable = true, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "nota_fiscal_venda_fk"))
 	private NotaFiscalVenda notaFiscalVenda;
 
 	@ManyToOne

@@ -65,14 +65,14 @@ public abstract class Pessoa implements Serializable {
 	@ManyToOne(targetEntity = Pessoa.class)
 	@JoinColumn(name = "empresa_id", nullable = true, 
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
-	private PessoaJuridica empresa;
+	private Pessoa empresa;
 
 
-	public PessoaJuridica getEmpresa() {
+	public Pessoa getEmpresa() {
 		return empresa;
 	}
 
-	public void setEmpresa(PessoaJuridica empresa) {
+	public void setEmpresa(Pessoa empresa) {
 		this.empresa = empresa;
 	}
 

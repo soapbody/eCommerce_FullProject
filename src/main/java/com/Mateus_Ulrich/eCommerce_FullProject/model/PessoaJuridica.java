@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.br.CNPJ;
 
 import javax.persistence.*;
+import javax.swing.*;
 import java.util.List;
 
 @Entity
@@ -29,8 +30,8 @@ public class PessoaJuridica extends Pessoa {
 	@Column(nullable = false)
 	private String razaoSocial;
 
-	@OneToMany(mappedBy = "empresa")
-	private List<CategoriaProduto> categorias;
+	private String categoria;
+
 	public String getCnpj() {
 		return cnpj;
 	}
@@ -71,11 +72,11 @@ public class PessoaJuridica extends Pessoa {
 		this.razaoSocial = razaoSocial;
 	}
 
-	public List<CategoriaProduto> getCategorias() {
-		return categorias;
+	public String getCategoria() {
+		return categoria;
 	}
 
-	public void setCategorias(List<CategoriaProduto> categorias) {
-		this.categorias = categorias;
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
 }
