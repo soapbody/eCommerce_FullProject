@@ -24,6 +24,7 @@ public class VendaCompraLojaVirtualDTO {
         getEnderecoCobranca = vendaCompraLojaVirtual.getEnderecoCobranca();
         valorDesconto = vendaCompraLojaVirtual.getValorDesconto();
         valorFrete = vendaCompraLojaVirtual.getValorFret();
+        itemVendaLojaDTOS = new ArrayList<>();
         for (ItemVendaLoja itemVendaLoja : vendaCompraLojaVirtual.getItemVendaLojaList()) {
             ItemVendaLojaDTO itemVendaLojaDTO = new ItemVendaLojaDTO(itemVendaLoja);
             itemVendaLojaDTOS.add(itemVendaLojaDTO);

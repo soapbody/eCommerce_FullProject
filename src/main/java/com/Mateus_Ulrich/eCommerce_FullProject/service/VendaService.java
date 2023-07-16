@@ -8,6 +8,15 @@ public class VendaService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    public void exclusaoTotalVendaBanco2(Long idVenda) {
+        String value = "begin; update vd_cp_loja_virt set excluido = true where id = " + idVenda +"; commit;";
+        jdbcTemplate.execute(value);
+    }
+    public void ativarRegistroVendaBanco(Long idVenda) {
+        String value = "begin; update vd_cp_loja_virt set excluido = false where id = " + idVenda +"; commit;";
+        jdbcTemplate.execute(value);
+    }
+
     public void exclusaoTotalVendaBanco(Long idVenda) {
         String value = "begin;"
                 + "UPDATE nota_fiscal_venda set venda_compra_loja_virt_id = null where venda_compra_loja_virt_id = "+idVenda+";"

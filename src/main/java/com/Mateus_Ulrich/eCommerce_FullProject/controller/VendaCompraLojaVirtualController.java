@@ -15,6 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @RestController
 public class VendaCompraLojaVirtualController {
@@ -79,15 +82,50 @@ public class VendaCompraLojaVirtualController {
     @ResponseBody
     @GetMapping(value = "**/consultaVendaId/{id}")
     public ResponseEntity<VendaCompraLojaVirtualDTO> consultaVendaId(@PathVariable(value = "id") Long id) {
-        VendaCompraLojaVirtual vendaCompraLojaVirtual = vendaCompraLojaVirtualRepository.findById(id).orElse(new VendaCompraLojaVirtual());
+        VendaCompraLojaVirtual vendaCompraLojaVirtual = vendaCompraLojaVirtualRepository.findByIdExclusao(id);
+
+        if (vendaCompraLojaVirtual == null) {
+            vendaCompraLojaVirtual = new VendaCompraLojaVirtual();
+        }
+
         VendaCompraLojaVirtualDTO vendaCompraLojaVirtualDTO = new VendaCompraLojaVirtualDTO(vendaCompraLojaVirtual);
         return new ResponseEntity<VendaCompraLojaVirtualDTO>(vendaCompraLojaVirtualDTO, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "**/consultaVendaPorProdutoId/{id}")
+    public ResponseEntity<List<VendaCompraLojaVirtualDTO>> consultaVendaPorProdutoId(@PathVariable(value = "id") Long id) {
+        List<VendaCompraLojaVirtual> vendaCompraLojaVirtuals = vendaCompraLojaVirtualRepository.vendaPorProduto(id);
+
+        if (vendaCompraLojaVirtuals == null) {
+            vendaCompraLojaVirtuals = new ArrayList<>();
+        }
+
+        List<VendaCompraLojaVirtualDTO> vendaCompraLojaVirtualDTOs = new ArrayList<VendaCompraLojaVirtualDTO>();
+        for (VendaCompraLojaVirtual vendaCompraLojaVirtual : vendaCompraLojaVirtuals) {
+            VendaCompraLojaVirtualDTO vendaCompraLojaVirtualDTO = new VendaCompraLojaVirtualDTO(vendaCompraLojaVirtual);
+            vendaCompraLojaVirtualDTOs.add(vendaCompraLojaVirtualDTO);
+        }
+        return new ResponseEntity<List<VendaCompraLojaVirtualDTO>>(vendaCompraLojaVirtualDTOs, HttpStatus.OK);
     }
     @ResponseBody
     @DeleteMapping(value = "**/deleteVendaTotalBanco/{idVenda}")
     public ResponseEntity<String> deleteVendaTotalBanco(@PathVariable(value = "idVenda") Long idVenda) {
         vendaService.exclusaoTotalVendaBanco(idVenda);
         return new ResponseEntity<String>("Venda Excluida", HttpStatus.OK);
+    }
+    @ResponseBody
+    @DeleteMapping(value = "**/deleteVendaTotalBanco2/{idVenda}")
+    public ResponseEntity<String> deleteVendaTotalBanco2(@PathVariable(value = "idVenda") Long idVenda) {
+        vendaService.exclusaoTotalVendaBanco2(idVenda);
+        return new ResponseEntity<String>("Venda Excluida", HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @PutMapping(value = "**/ativarRegistroVendaBanco/{idVenda}")
+    public ResponseEntity<String> ativarRegistroVendaBanco(@PathVariable(value = "idVenda") Long idVenda) {
+        vendaService.ativarRegistroVendaBanco(idVenda);
+        return new ResponseEntity<String>("Venda Ativada com Sucesso", HttpStatus.OK);
     }
 
 

@@ -27,6 +27,7 @@ public class VendaCompraLojaVirtual implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_vd_cp_loja_virt")
 	private Long id;
+	private Boolean excluido = Boolean.FALSE;
 	@NotNull(message = "A pessoa compradora deve ser informado")
 	@ManyToOne(targetEntity = PessoaFisica.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
@@ -88,6 +89,14 @@ public class VendaCompraLojaVirtual implements Serializable {
 
 	public void setItemVendaLojaList(List<ItemVendaLoja> itemVendaLojaList) {
 		this.itemVendaLojaList = itemVendaLojaList;
+	}
+
+	public Boolean getExcluido() {
+		return excluido;
+	}
+
+	public void setExcluido(Boolean excluido) {
+		this.excluido = excluido;
 	}
 
 	public Long getId() {
