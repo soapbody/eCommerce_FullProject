@@ -20,7 +20,6 @@ public class JacksonConfig implements WebMvcConfigurer {
         builder.featuresToEnable(SerializationFeature.WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED);
         return builder;
     }
-
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         for (HttpMessageConverter<?> converter : converters) {

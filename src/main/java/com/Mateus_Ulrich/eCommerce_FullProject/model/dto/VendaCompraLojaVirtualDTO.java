@@ -4,6 +4,7 @@ import com.Mateus_Ulrich.eCommerce_FullProject.model.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class VendaCompraLojaVirtualDTO {
@@ -14,6 +15,7 @@ public class VendaCompraLojaVirtualDTO {
     private Endereco getEnderecoCobranca;
     private BigDecimal valorDesconto;
     private BigDecimal valorFrete;
+    private Date dataVenda;
     private List<ItemVendaLojaDTO> itemVendaLojaDTOS = new ArrayList<ItemVendaLojaDTO>();
 
     public VendaCompraLojaVirtualDTO(VendaCompraLojaVirtual vendaCompraLojaVirtual) {
@@ -25,10 +27,19 @@ public class VendaCompraLojaVirtualDTO {
         valorDesconto = vendaCompraLojaVirtual.getValorDesconto();
         valorFrete = vendaCompraLojaVirtual.getValorFret();
         itemVendaLojaDTOS = new ArrayList<>();
+        dataVenda = vendaCompraLojaVirtual.getDataVenda();
         for (ItemVendaLoja itemVendaLoja : vendaCompraLojaVirtual.getItemVendaLojaList()) {
             ItemVendaLojaDTO itemVendaLojaDTO = new ItemVendaLojaDTO(itemVendaLoja);
             itemVendaLojaDTOS.add(itemVendaLojaDTO);
         }
+    }
+
+    public Date getDataVenda() {
+        return dataVenda;
+    }
+
+    public void setDataVenda(Date dataVenda) {
+        this.dataVenda = dataVenda;
     }
 
     public Long getId() {

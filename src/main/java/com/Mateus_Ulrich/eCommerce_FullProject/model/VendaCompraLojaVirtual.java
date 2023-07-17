@@ -2,6 +2,7 @@ package com.Mateus_Ulrich.eCommerce_FullProject.model;
 
 import com.Mateus_Ulrich.eCommerce_FullProject.util.CustomDateDeserializer;
 import com.Mateus_Ulrich.eCommerce_FullProject.util.ValidDateFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -60,15 +61,13 @@ public class VendaCompraLojaVirtual implements Serializable {
 	@DecimalMin(value = "5.", inclusive = true, message = "O valor do frete deve ser maior ou igual a 5")
 	@Column(nullable = false)
 	private BigDecimal valorFret;
-
 	@Min(value = 1, message = "O dia de entrega não pode ser menor que 1.")
 	@Max(value = 31, message = "O dia de entrega não pode ser superior a 31")
 	@Column(nullable = false)
 	private Integer diaEntrega;
-	@ValidDateFormat(message = "Data inválida. Use o formato dd/MM/yyyyy")
-	@JsonDeserialize(using = CustomDateDeserializer.class)
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
 	@Column(nullable = false)
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataVenda;
 	@ValidDateFormat(message = "Data inválida. Use o formato dd/MM/yyyy")
 	@JsonDeserialize(using = CustomDateDeserializer.class)
@@ -186,7 +185,7 @@ public class VendaCompraLojaVirtual implements Serializable {
 	public void setDiaEntrega(Integer diaEntrega) {
 		this.diaEntrega = diaEntrega;
 	}
-
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	public Date getDataVenda() {
 		return dataVenda;
 	}

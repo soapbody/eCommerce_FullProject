@@ -1,5 +1,4 @@
 package com.Mateus_Ulrich.eCommerce_FullProject;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -14,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.concurrent.Executor;
-
 @SpringBootApplication
 @EnableAsync
 @EntityScan(basePackages = "com.Mateus_Ulrich.eCommerce_FullProject.model")
@@ -23,13 +21,11 @@ import java.util.concurrent.Executor;
 @EnableTransactionManagement
 @EnableScheduling
 public class ECommerce_FullProject implements AsyncConfigurer {
-
 	public static void main(String[] args) {
 
 		System.out.println(new BCryptPasswordEncoder().encode("123"));
 		SpringApplication.run(ECommerce_FullProject.class, args);
 	}
-
 	@Override
 	@Bean
 	public Executor getAsyncExecutor() {
