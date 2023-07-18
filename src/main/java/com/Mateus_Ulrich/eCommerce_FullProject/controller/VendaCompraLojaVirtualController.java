@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -93,6 +94,18 @@ public class VendaCompraLojaVirtualController {
         VendaCompraLojaVirtualDTO vendaCompraLojaVirtualDTO = new VendaCompraLojaVirtualDTO(vendaCompraLojaVirtual);
         return new ResponseEntity<VendaCompraLojaVirtualDTO>(vendaCompraLojaVirtualDTO, HttpStatus.OK);
     }
+    @ResponseBody
+    @GetMapping(value = "**/consultaVendaPorCliente/{id}")
+    public ResponseEntity<List<VendaCompraLojaVirtualDTO>> consultaVendaPorCliente(@PathVariable(value = "id") Long id) {
+        List<VendaCompraLojaVirtual> lista = vendaCompraLojaVirtualRepository.vendaPorCliente(id);
+
+        if (lista == null) {
+            lista = new ArrayList<VendaCompraLojaVirtual>();
+
+        }
+        List<VendaCompraLojaVirtualDTO> dtos = lista.stream().map(VendaCompraLojaVirtualDTO::new).collect(Collectors.toList());
+        return new ResponseEntity<List<VendaCompraLojaVirtualDTO>>(dtos, HttpStatus.OK);
+    }
 
     @ResponseBody
     @DeleteMapping(value = "**/deleteVendaTotalBanco/{idVenda}")
@@ -115,10 +128,8 @@ public class VendaCompraLojaVirtualController {
     }
     @ResponseBody
     @GetMapping(value = "**/consultaVendaDinamica/{valor}/{consulta}")
-    public ResponseEntity<List<VendaCompraLojaVirtualDTO>> consultaVendaDinamica(@PathVariable(value = "valor") String valor,
-                                                                                     @PathVariable(value = "consulta") String consulta) {
+    public ResponseEntity<List<VendaCompraLojaVirtualDTO>> consultaVendaDinamica(@PathVariable(value = "valor") String valor, @PathVariable(value = "consulta") String consulta) {
         List<VendaCompraLojaVirtual> vendaCompraLojaVirtualList = null;
-
         if (consulta.equalsIgnoreCase("POR_ID_PROD")) {
             vendaCompraLojaVirtualList = vendaCompraLojaVirtualRepository.vendaPorProduto(Long.parseLong(valor));
         }
@@ -156,6 +167,21 @@ public class VendaCompraLojaVirtualController {
         }
         return new ResponseEntity<List<VendaCompraLojaVirtualDTO>>(vendaCompraLojaVirtualDTOs, HttpStatus.OK);
     }
+
+    @ResponseBody
+    @GetMapping(value = "**/consultaVendaCpfCnpj/{value}")
+    public ResponseEntity<List<VendaCompraLojaVirtualDTO>> consultaVendaCpfCnpj(@PathVariable(value = "value") String value) {
+        List<VendaCompraLojaVirtual> vendaCompraLojaVirtualList = new ArrayList<>();
+        vendaCompraLojaVirtualList = vendaCompraLojaVirtualRepository.consultaVendaCpfCnpj(value);
+        List<VendaCompraLojaVirtualDTO> vendaCompraLojaVirtualDTOs = new ArrayList<VendaCompraLojaVirtualDTO>();
+        for (VendaCompraLojaVirtual vendaCompraLojaVirtual : vendaCompraLojaVirtualList) {
+            VendaCompraLojaVirtualDTO vendaCompraLojaVirtualDTO = new VendaCompraLojaVirtualDTO(vendaCompraLojaVirtual);
+            vendaCompraLojaVirtualDTOs.add(vendaCompraLojaVirtualDTO);
+        }
+        return new ResponseEntity<List<VendaCompraLojaVirtualDTO>>(vendaCompraLojaVirtualDTOs, HttpStatus.OK);
+    }
+
+
 
 
 

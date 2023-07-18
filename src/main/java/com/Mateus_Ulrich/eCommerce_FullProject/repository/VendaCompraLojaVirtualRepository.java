@@ -19,6 +19,8 @@ public interface VendaCompraLojaVirtualRepository extends JpaRepository<VendaCom
     List<VendaCompraLojaVirtual> vendaPorProduto(Long idProduto);
     @Query(value = "select distinct(i.vendaCompraLojaVirtual) from ItemVendaLoja i where i.vendaCompraLojaVirtual.excluido = false and upper(trim(i.produto.nome)) like %?1%")
     List<VendaCompraLojaVirtual> vendaPorNomeProduto(String valor);
+    @Query(value = "select distinct(i.vendaCompraLojaVirtual) from ItemVendaLoja i where i.vendaCompraLojaVirtual.excluido = false and i.vendaCompraLojaVirtual.pessoa.id = :id")
+    List<VendaCompraLojaVirtual> vendaPorCliente(@Param("id") Long id);
     @Query(value = "select distinct(i.vendaCompraLojaVirtual) from ItemVendaLoja i where i.vendaCompraLojaVirtual.excluido = false and upper(trim(i.vendaCompraLojaVirtual.pessoa.nome)) like %?1%")
     List<VendaCompraLojaVirtual> vendaPorNomeCliente(String valor);
     @Query(value = "select distinct(i.vendaCompraLojaVirtual) from ItemVendaLoja i where i.vendaCompraLojaVirtual.excluido = false and upper(trim(i.vendaCompraLojaVirtual.enderecoCobranca.ruaLogra)) like %?1%")
@@ -29,4 +31,6 @@ public interface VendaCompraLojaVirtualRepository extends JpaRepository<VendaCom
     //List<VendaCompraLojaVirtual> consultaVendaFaixaData(@Param("data1") Date data1, @Param("data2") Date data2);
     @Query(value = "SELECT * FROM vd_cp_loja_virt WHERE data_venda >= :data1 AND data_venda <= :data2", nativeQuery = true)
     List<VendaCompraLojaVirtual> consultaVendaFaixaData(@Param("data1") Date data1, @Param("data2") Date data2);
+    @Query(value = "select distinct(i.vendaCompraLojaVirtual) from ItemVendaLoja i where i.vendaCompraLojaVirtual.excluido = false and (upper(trim(i.vendaCompraLojaVirtual.pessoa.cpf)) = ?1 OR upper(trim(i.vendaCompraLojaVirtual.empresa.cnpj)) = ?1)")
+    List<VendaCompraLojaVirtual> consultaVendaCpfCnpj(String value);
 }

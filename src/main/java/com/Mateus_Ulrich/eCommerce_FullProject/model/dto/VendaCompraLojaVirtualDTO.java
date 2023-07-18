@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class VendaCompraLojaVirtualDTO {
     private Long id;
@@ -28,10 +29,9 @@ public class VendaCompraLojaVirtualDTO {
         valorFrete = vendaCompraLojaVirtual.getValorFret();
         itemVendaLojaDTOS = new ArrayList<>();
         dataVenda = vendaCompraLojaVirtual.getDataVenda();
-        for (ItemVendaLoja itemVendaLoja : vendaCompraLojaVirtual.getItemVendaLojaList()) {
-            ItemVendaLojaDTO itemVendaLojaDTO = new ItemVendaLojaDTO(itemVendaLoja);
-            itemVendaLojaDTOS.add(itemVendaLojaDTO);
-        }
+        itemVendaLojaDTOS = vendaCompraLojaVirtual.getItemVendaLojaList().stream()
+                .map(ItemVendaLojaDTO::new)
+                .collect(Collectors.toList());
     }
 
     public Date getDataVenda() {
