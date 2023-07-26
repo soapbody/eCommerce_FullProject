@@ -2,9 +2,7 @@ package com.Mateus_Ulrich.eCommerce_FullProject.controller;
 
 import com.Mateus_Ulrich.eCommerce_FullProject.exceptions.CustomException;
 import com.Mateus_Ulrich.eCommerce_FullProject.model.AvaliacaoProduto;
-import com.Mateus_Ulrich.eCommerce_FullProject.model.ImagemProduto;
-import com.Mateus_Ulrich.eCommerce_FullProject.model.dto.AvaliacaoProdutoDTO;
-import com.Mateus_Ulrich.eCommerce_FullProject.model.dto.ImagemProdutoDTO;
+import com.Mateus_Ulrich.eCommerce_FullProject.model.dto.api.consultacnpj.AvaliacaoProdutoDTO;
 import com.Mateus_Ulrich.eCommerce_FullProject.repository.AvaliacaoProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

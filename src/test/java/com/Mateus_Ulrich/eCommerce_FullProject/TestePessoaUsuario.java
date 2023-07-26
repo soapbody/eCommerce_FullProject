@@ -1,5 +1,6 @@
 package com.Mateus_Ulrich.eCommerce_FullProject;
 
+import com.Mateus_Ulrich.eCommerce_FullProject.controller.FormaPagamentoController;
 import com.Mateus_Ulrich.eCommerce_FullProject.controller.PessoaController;
 import com.Mateus_Ulrich.eCommerce_FullProject.enums.TipoEndereco;
 import com.Mateus_Ulrich.eCommerce_FullProject.exceptions.CustomException;
@@ -21,6 +22,15 @@ public class TestePessoaUsuario {
     private PessoaController pessoaController;
     @Autowired
     private PessoaJuridicaRepository pessoaJuridicaRepository;
+
+    @Autowired
+    private FormaPagamentoController formaPagamentoController;
+
+    @Test
+    public void testFormaPagamento() throws CustomException{
+        formaPagamentoController.ListaFormaPagamento();
+        formaPagamentoController.listaFormaPagamentoPorIdEmpresa(64L);
+    }
 
     @Test
     public void testCadPessoaJuridica() throws CustomException {

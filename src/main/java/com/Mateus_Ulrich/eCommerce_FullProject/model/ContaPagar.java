@@ -37,7 +37,6 @@ public class ContaPagar implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_conta_pagar")
 	private Long id;
-
 	@NotNull(message = "Informe a descrição da conta")
 	@NotEmpty(message = "Informe a descrição da conta")
 	@Column(nullable = false)
@@ -59,23 +58,18 @@ public class ContaPagar implements Serializable {
 	private Date dtVencimento;
 	@Temporal(TemporalType.DATE)
 	private Date dtPagamento;
-
-	@ManyToOne(targetEntity = Pessoa.class)
+	@ManyToOne(targetEntity = PessoaFisica.class)
 	@JoinColumn(name = "pessoa_id", nullable = false,
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
 	private PessoaFisica pessoa;
-
-	@ManyToOne(targetEntity = Pessoa.class)
+	@ManyToOne(targetEntity = PessoaJuridica.class)
 	@JoinColumn(name = "pessoa_forn_id", nullable = false, 
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_forn_fk"))
 	private PessoaJuridica pessoa_fornecedor;
-	
-	
-	@ManyToOne(targetEntity = Pessoa.class)
+	@ManyToOne(targetEntity = PessoaJuridica.class)
 	@JoinColumn(name = "empresa_id", nullable = false, 
 	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
 	private PessoaJuridica empresa;
-
 
 	public void setPessoa_fornecedor(PessoaJuridica pessoa_fornecedor) {
 		this.pessoa_fornecedor = pessoa_fornecedor;
@@ -116,8 +110,6 @@ public class ContaPagar implements Serializable {
 	public Pessoa getPessoa_fornecedor() {
 		return pessoa_fornecedor;
 	}
-
-
 
 	public Date getDtVencimento() {
 		return dtVencimento;

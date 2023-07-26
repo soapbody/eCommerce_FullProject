@@ -3,8 +3,10 @@ package com.Mateus_Ulrich.eCommerce_FullProject.controller;
 import com.Mateus_Ulrich.eCommerce_FullProject.exceptions.CustomException;
 import com.Mateus_Ulrich.eCommerce_FullProject.model.NotaFiscalCompra;
 import com.Mateus_Ulrich.eCommerce_FullProject.model.NotaFiscalVenda;
+import com.Mateus_Ulrich.eCommerce_FullProject.model.dto.RelatorioProdutoCompradoNotaFiscalDTO;
 import com.Mateus_Ulrich.eCommerce_FullProject.repository.NotaFiscalCompraRepository;
 import com.Mateus_Ulrich.eCommerce_FullProject.repository.NotaFiscalVendaRepository;
+import com.Mateus_Ulrich.eCommerce_FullProject.service.NotaFiscalCompraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,15 +14,22 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 
 public class NotaFiscalCompraController {
-    @Autowired
     private NotaFiscalCompraRepository notaFiscalCompraRepository;
-    @Autowired
     private NotaFiscalVendaRepository notaFiscalVendaRepository;
+    private NotaFiscalCompraService notaFiscalCompraService;
+
+    public NotaFiscalCompraController(NotaFiscalCompraRepository notaFiscalCompraRepository, NotaFiscalVendaRepository notaFiscalVendaRepository, NotaFiscalCompraService notaFiscalCompraService) {
+        this.notaFiscalCompraRepository = notaFiscalCompraRepository;
+        this.notaFiscalVendaRepository = notaFiscalVendaRepository;
+        this.notaFiscalCompraService = notaFiscalCompraService;
+    }
+
     @ResponseBody /*Poder dar um retorno da API*/
     @PostMapping(value = "**/salvarNotaFiscalCompra") /*Mapeando a url para receber JSON*/
     public ResponseEntity<NotaFiscalCompra> salvarNotaFiscalCompra(@RequestBody @Valid NotaFiscalCompra notaFiscalCompra) throws CustomException { /*Recebe o JSON e converte pra Objeto*/
@@ -99,5 +108,14 @@ public class NotaFiscalCompraController {
         notaFiscalCompraRepository.deleteById(id);
 
         return new ResponseEntity("Nota Removida",HttpStatus.OK);
+    }
+    @ResponseBody
+    @PostMapping(value = "**/relatorioProdutosCompradoNotaFiscal")
+    public ResponseEntity<List<RelatorioProdutoCompradoNotaFiscalDTO>> relatorioProdutosCompradoNotaFiscal(@Valid @RequestBody RelatorioProdutoCompradoNotaFiscalDTO dto) {
+
+        List<RelatorioProdutoCompradoNotaFiscalDTO> retorno = new ArrayList<>();
+        retorno = notaFiscalCompraService.gerarRelatorioProdutoCompraNota(dto);
+
+        return new ResponseEntity<List<RelatorioProdutoCompradoNotaFiscalDTO>>(retorno, HttpStatus.OK);
     }
 }

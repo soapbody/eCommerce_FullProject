@@ -1,25 +1,25 @@
-package com.Mateus_Ulrich.eCommerce_FullProject.model.dto;
+package com.Mateus_Ulrich.eCommerce_FullProject.model.dto.api.consultacnpj;
 
 import java.io.Serializable;
 
-public class QualificacaoDoResponsavelDTO implements Serializable {
+public class PorteDTO implements Serializable {
     private static final long seriaVersionUID = 1L;
-    private Long id;
+    private String id;
     private String descricao;
 
-    public QualificacaoDoResponsavelDTO(Long id, String descricao) {
+    public PorteDTO(String id, String descricao) {
         this.id = id;
         this.descricao = descricao;
     }
 
-    public QualificacaoDoResponsavelDTO() {
+    public PorteDTO() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

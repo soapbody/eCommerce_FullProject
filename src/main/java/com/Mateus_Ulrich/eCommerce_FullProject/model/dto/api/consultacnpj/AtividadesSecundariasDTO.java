@@ -1,4 +1,4 @@
-package com.Mateus_Ulrich.eCommerce_FullProject.model.dto;
+package com.Mateus_Ulrich.eCommerce_FullProject.model.dto.api.consultacnpj;
 
 import java.io.Serializable;
 

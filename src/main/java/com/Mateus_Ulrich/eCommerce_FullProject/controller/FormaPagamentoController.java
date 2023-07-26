@@ -6,12 +6,10 @@ import com.Mateus_Ulrich.eCommerce_FullProject.repository.FormaPagamentoReposito
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class FormaPagamentoController {
@@ -25,4 +23,16 @@ public class FormaPagamentoController {
 
         return new ResponseEntity<FormaPagamento>(formaPagamento, HttpStatus.OK);
     }
+
+    @ResponseBody
+    @GetMapping(value = "**/listaFormaPagamentoPorIdEmpresa/{id}")
+    public ResponseEntity<List<FormaPagamento>> listaFormaPagamentoPorIdEmpresa(@PathVariable(value = "id") Long id) {
+        return new ResponseEntity<List<FormaPagamento>>(formaPagamentoRepository.findAll(id), HttpStatus.OK);
+    }
+    @ResponseBody
+    @GetMapping(value = "**/listaFormaPagamento")
+    public ResponseEntity<List<FormaPagamento>> ListaFormaPagamento() {
+        return new ResponseEntity<List<FormaPagamento>>(formaPagamentoRepository.findAll(), HttpStatus.OK);
+    }
+
 }

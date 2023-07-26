@@ -49,7 +49,6 @@ public class Produto implements Serializable {
 	@NotNull(message = "Valor de venda do produto deve ser informado.")
 	@Column(nullable = false)
 	private BigDecimal valorVenda = BigDecimal.ZERO;
-
 	@Column(nullable = false)
 	private Integer qtdEstoque;
 
@@ -65,12 +64,10 @@ public class Produto implements Serializable {
 	@ManyToOne(targetEntity = PessoaJuridica.class)
 	@JoinColumn(name = "empresa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_id_fk"))
 	private PessoaJuridica empresa;
-
 	@NotNull(message = "Categoria do Produto do produto deve ser informado.")
 	@ManyToOne(targetEntity = CategoriaProduto.class)
 	@JoinColumn(name = "categoria_produto_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "categoria_produto_id_fk"))
 	private CategoriaProduto categoriaProduto;
-
 	@NotNull(message = "Marca do Produto do produto deve ser informado.")
 	@ManyToOne(targetEntity = MarcaProduto.class)
 	@JoinColumn(name = "marca_produto_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "marca_produto_id_fk"))

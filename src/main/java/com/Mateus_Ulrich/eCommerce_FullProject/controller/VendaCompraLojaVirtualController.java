@@ -1,14 +1,15 @@
 package com.Mateus_Ulrich.eCommerce_FullProject.controller;
 
+import com.Mateus_Ulrich.eCommerce_FullProject.enums.StatusContaReceber;
 import com.Mateus_Ulrich.eCommerce_FullProject.exceptions.CustomException;
 import com.Mateus_Ulrich.eCommerce_FullProject.model.*;
 import com.Mateus_Ulrich.eCommerce_FullProject.model.dto.VendaCompraLojaVirtualDTO;
-import com.Mateus_Ulrich.eCommerce_FullProject.repository.EnderecoRepository;
-import com.Mateus_Ulrich.eCommerce_FullProject.repository.NotaFiscalVendaRepository;
-import com.Mateus_Ulrich.eCommerce_FullProject.repository.StatusRastreioRepository;
-import com.Mateus_Ulrich.eCommerce_FullProject.repository.VendaCompraLojaVirtualRepository;
+import com.Mateus_Ulrich.eCommerce_FullProject.repository.*;
+
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
+import com.Mateus_Ulrich.eCommerce_FullProject.service.ServiceSendEmail;
 import com.Mateus_Ulrich.eCommerce_FullProject.service.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,7 +17,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,10 +39,14 @@ public class VendaCompraLojaVirtualController {
     @Autowired
     private StatusRastreioRepository statusRastreioRepository;
     @Autowired
+    private ContaReceberRepository contaReceberRepository;
+    @Autowired
     private VendaService vendaService;
+    @Autowired
+    private ServiceSendEmail serviceSendEmail;
     @ResponseBody
     @PostMapping(value = "**/salvarVendaLoja")
-    public ResponseEntity<VendaCompraLojaVirtualDTO> salvarVendaLoja(@RequestBody @Valid VendaCompraLojaVirtual vendaCompraLojaVirtual) throws CustomException {
+    public ResponseEntity<VendaCompraLojaVirtualDTO> salvarVendaLoja(@RequestBody @Valid VendaCompraLojaVirtual vendaCompraLojaVirtual) throws CustomException, MessagingException, UnsupportedEncodingException {
         vendaCompraLojaVirtual.getPessoa().setEmpresa(vendaCompraLojaVirtual.getEmpresa());
         PessoaFisica pessoaFisica = pessoaController.salvarPf(vendaCompraLojaVirtual.getPessoa()).getBody();
         vendaCompraLojaVirtual.setPessoa(pessoaFisica);
@@ -60,7 +68,7 @@ public class VendaCompraLojaVirtualController {
             vendaCompraLojaVirtual.getItemVendaLojaList().get(i).setVendaCompraLojaVirtual(vendaCompraLojaVirtual);
         }
 
-        /*Salva primeiro a venda e todo os dados*/
+        /*Salva primeiro a venda e todos os dados*/
         vendaCompraLojaVirtual = vendaCompraLojaVirtualRepository.saveAndFlush(vendaCompraLojaVirtual);
 
         StatusRastreio statusRastreio = new StatusRastreio();
@@ -70,15 +78,39 @@ public class VendaCompraLojaVirtualController {
         statusRastreio.setEstado("local");
         statusRastreio.setStatus("Inicio Compra");
         statusRastreio.setVendaCompraLojaVirtual(vendaCompraLojaVirtual);
-        statusRastreioRepository.save(statusRastreio);
 
+        statusRastreioRepository.save(statusRastreio);
 
         /*Associa a venda gravada no banco com a nota fiscal*/
         vendaCompraLojaVirtual.getNotaFiscalVenda().setVendaCompraLojaVirtual(vendaCompraLojaVirtual);
 
         /*Persiste novamente as nota fiscal novamente pra ficar amarrada na venda*/
         notaFiscalVendaRepository.saveAndFlush(vendaCompraLojaVirtual.getNotaFiscalVenda());
+
         VendaCompraLojaVirtualDTO compraLojaVirtualDTO = new VendaCompraLojaVirtualDTO(vendaCompraLojaVirtual);
+
+        ContaReceber contaReceber = new ContaReceber();
+        contaReceber.setDescricao("Venda da Loja Virtual Numero: " + vendaCompraLojaVirtual.getId());
+        contaReceber.setDtPagamento(Calendar.getInstance().getTime());
+        contaReceber.setDtVencimento(Calendar.getInstance().getTime());
+        contaReceber.setEmpresa(vendaCompraLojaVirtual.getEmpresa());
+        contaReceber.setPessoa(vendaCompraLojaVirtual.getPessoa());
+        contaReceber.setStatus(StatusContaReceber.QUITADA);
+        contaReceber.setValorDesconto(vendaCompraLojaVirtual.getValorDesconto());
+        contaReceber.setValorTotal(vendaCompraLojaVirtual.getValorTotal());
+
+        contaReceberRepository.saveAndFlush(contaReceber);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Olá, ").append(pessoaFisica.getNome()).append("</br>");
+        sb.append("Voce realizou a compra de Número: ").append(vendaCompraLojaVirtual.getId()).append("</br>");
+        sb.append("Na Loja ").append(vendaCompraLojaVirtual.getEmpresa().getNomeFantasia());
+        serviceSendEmail.enviarEmailHtml("Compra Finalizada", sb.toString(), pessoaFisica.getEmail());
+
+        StringBuilder sb2 = new StringBuilder();
+        sb2.append("Voce realizou uma venda, Número: " ).append(vendaCompraLojaVirtual.getId());
+        serviceSendEmail.enviarEmailHtml("Venda Finalizada", sb2.toString(), vendaCompraLojaVirtual.getEmpresa().getEmail());
+
         return new ResponseEntity<VendaCompraLojaVirtualDTO>(compraLojaVirtualDTO, HttpStatus.OK);
     }
 

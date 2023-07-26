@@ -1,15 +1,19 @@
-package com.Mateus_Ulrich.eCommerce_FullProject.model.dto;
+package com.Mateus_Ulrich.eCommerce_FullProject.model.dto.api.consultacnpj;
 
-public class QualificacaoRepresentanteDTO {
+import java.io.Serializable;
+
+public class QualificacaoSocioDTO implements Serializable {
+    private static final long seriaVersionUID = 1L;
+
     private Long id;
     private String descricao;
 
-    public QualificacaoRepresentanteDTO(Long id, String descricao) {
+    public QualificacaoSocioDTO(Long id, String descricao) {
         this.id = id;
         this.descricao = descricao;
     }
 
-    public QualificacaoRepresentanteDTO() {
+    public QualificacaoSocioDTO() {
     }
 
     public Long getId() {
